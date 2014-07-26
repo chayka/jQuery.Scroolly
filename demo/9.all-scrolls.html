@@ -132,7 +132,7 @@
         
         <div class="footer">
             <div class="container">
-              ScRolling In The Deep - Demo of jQuery.scrolly
+              ScRolling In The Deep - Demo of jQuery.scroolly
             </div>
         </div>
         <div class="progress_bar"></div>
@@ -159,11 +159,11 @@
           };
         </script>
         <script src="js/vendor/less-1.7.3.min.js"></script>
-        <script src="../src/jquery.scrolly.js"></script>
+        <script src="../src/jquery.scroolly.js"></script>
         <script>
             $('.to-top').click(function(){
                 $('html, body').animate({scrollTop: 0}, 500);
-            }).scrolly([
+            }).scroolly([
                 {
                     to: 'doc-top + 100vp',
                     css: {
@@ -180,7 +180,7 @@
                 }
             ]);
             
-            $('.header').scrolly([
+            $('.header').scroolly([
                 {
 //                    from: 'doc-top',
                     to: 'el-bottom = vp-top',
@@ -197,7 +197,7 @@
                     onScroll: function(element, offset, length){
                         var progress = offset / length;
                         
-                        element.css('background-position', 'center '+$.scrolly.getTransitionFloatValue(0, 40, progress)+'%');
+                        element.css('background-position', 'center '+$.scroolly.getTransitionFloatValue(0, 40, progress)+'%');
                     }
                 },
                 {
@@ -215,7 +215,7 @@
                     }
                 }                
             ]);
-            $('.header h1').scrolly([
+            $('.header h1').scroolly([
                 {
 //                    from: 'top',
 //                    to: 'top bottom',
@@ -234,7 +234,7 @@
                 }
             ], $('.header'));
             
-//            $('.navbar').scrolly([
+//            $('.navbar').scroolly([
 //                {
 //                    to: 'con-top',
 //                    css: {
@@ -250,7 +250,7 @@
 //                    }
 //                }
 //            ], $('.body'));
-            $('.navbar').scrolly([
+            $('.navbar').scroolly([
                 {
                     to: 'con-top + 100el',
                     direction: 1,
@@ -290,7 +290,7 @@
             ], $('.body'));
             
             
-            $('article h2').scrolly([
+            $('article h2').scroolly([
                 {
                     alias: 'before',
 //                    from: 'doc-top',
@@ -337,7 +337,7 @@
                 }
             ], $('article'));
             
-            $('.to-fix').scrolly([
+            $('.to-fix').scroolly([
                 {
                     alias: 'before',
                     from: '',
@@ -369,7 +369,7 @@
                     }
                 }
             ], $('.staging'));
-            $('.staging-1 .scene-1').scrolly([
+            $('.staging-1 .scene-1').scroolly([
                 {
                     alias: 'before',
                     from: '',
@@ -398,7 +398,7 @@
                     }
                 }
             ], $('.staging-1'));
-            $('.staging-1 .scene-2').scrolly([
+            $('.staging-1 .scene-2').scroolly([
                 {
                     alias: 'before',
                     from: '',
@@ -427,7 +427,7 @@
                     }
                 }
             ], $('.staging-1'));
-            $('.staging-1 .scene-3').scrolly([
+            $('.staging-1 .scene-3').scroolly([
                 {
                     alias: 'before',
                     from: '',
@@ -456,7 +456,7 @@
                     }
                 }
             ], $('.staging-1'));
-            $('.staging-1 .scene-4').scrolly([
+            $('.staging-1 .scene-4').scroolly([
                 {
                     alias: 'before',
                     from: '',
@@ -492,7 +492,7 @@
             ], $('.staging-1'));
             
             
-            $('.staging-2 .scene-1').scrolly([
+            $('.staging-2 .scene-1').scroolly([
                 {
                     alias: 'before',
                     from: '',
@@ -510,7 +510,7 @@
                     }
                 }
             ], $('.staging-2'));
-            $('.staging-2 .scene-2').scrolly([
+            $('.staging-2 .scene-2').scroolly([
                 {
                     alias: 'before',
                     from: '',
@@ -528,7 +528,7 @@
                     }
                 }
             ], $('.staging-2'));
-            $('.staging-2 .scene-3').scrolly([
+            $('.staging-2 .scene-3').scroolly([
                 {
                     alias: 'before',
                     from: '',
@@ -546,7 +546,7 @@
                     }
                 }
             ], $('.staging-2'));
-            $('.staging-2 .scene-4').scrolly([
+            $('.staging-2 .scene-4').scroolly([
                 {
                     alias: 'before',
                     from: '',
@@ -567,7 +567,7 @@
                 }
             ], $('.staging-2'));
 
-            $('.progress_bar').scrolly([
+            $('.progress_bar').scroolly([
                 {
                     cssFrom:{
                         width: '0.0%'

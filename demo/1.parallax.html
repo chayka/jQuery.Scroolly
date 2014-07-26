@@ -118,7 +118,7 @@
         
         <div class="footer">
             <div class="container">
-              ScRolling In The Deep - Demo of jQuery.scrolly
+              ScRolling In The Deep - Demo of jQuery.scroolly
             </div>
         </div>
         <div class="progress_bar"></div>
@@ -145,9 +145,9 @@
           };
         </script>
         <script src="js/vendor/less-1.7.3.min.js"></script>
-        <script src="../src/jquery.scrolly.js"></script>
+        <script src="../src/jquery.scroolly.js"></script>
         <script>
-            $('.header').scrolly([
+            $('.header').scroolly([
                 {
 //                    from: 'doc-top',
                     to: 'el-bottom = vp-top',
@@ -164,7 +164,7 @@
                     onScroll: function(element, offset, length){
                         var progress = offset / length;
                         
-                        element.css('background-position', 'center '+$.scrolly.getTransitionFloatValue(0, 40, progress)+'%');
+                        element.css('background-position', 'center '+$.scroolly.getTransitionFloatValue(0, 40, progress)+'%');
                     }
                 },
                 {
@@ -180,18 +180,18 @@
                     }
                 }                
             ]);
-            $('.header h1').scrolly([
+            $('.header h1').scroolly([
                 {
                     from: 'con-top',
                     to: 'con-bottom = top',
                     cssFrom:{
-                                                                                        'text-shadow': '0 0 0px white',
+                        'text-shadow': '0 0 0px white',
 //                        'bottom': '100px',
                         'transform': 'translateY(0px)',
                         'opacity': '1'
                     },
                     cssTo:{
-                                                                                        'text-shadow': '0 0 30px white',
+                        'text-shadow': '0 0 30px white',
 //                        'bottom': '10px',
                         'transform': 'translateY(100px)',
                         'opacity': '.1'
