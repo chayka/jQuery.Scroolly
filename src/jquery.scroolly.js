@@ -372,7 +372,7 @@
                     var css = {};
                     for(var property in fromCss){
                         var fromProp = fromCss[property];
-                        var toProp = $.scroolly._default(toCss, property, '');
+                        var toProp = $.scroolly._default(toCss, property, fromProp);
                         css[property] = $.scroolly.getTransitionValue(fromProp, toProp, progress);
                     }
                     element.css($.scroolly.extendCssWithPrefix(css));
@@ -837,9 +837,12 @@
             return stop;
         }
         var called = 0;
+        if($.scroolly._isNumber(start) && $.scroolly._isNumber(stop)){
+            return $.scroolly.getTransitionFloatValue(start, start, progress);
+        }
         var re = /(\d*\.\d+)|(\d+)|(#[0-9a-f]{6})|(#[0-9a-f]{3})/gi;
-        var stops = stop.match(re);
-        return start.replace(re, 
+        var stops = (''+stop).match(re);
+        return (''+start).replace(re, 
         function(value, float, int, color6, color3){
 //            console.dir({'replace callback args':arguments, stops: stops, called: called});
             var currentStop = stops[called];
