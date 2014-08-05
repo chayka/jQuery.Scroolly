@@ -1,5 +1,24 @@
-(function($) {
-    $.scroolly = {
+(function(root, factory) {
+    "use strict";
+
+    if (typeof define === 'function' && define.amd) {
+        // Set up jQuery.Scroolly appropriately for the environment. Start with AMD.
+        define(['jquery'], function($) {
+            // Export global even in AMD case in case this script is loaded with
+            return factory(root, $, false);
+        });
+
+		return;
+    }
+
+	// Finally, as a browser global in jquery ns.
+	factory(root, (root.jQuery || root.Zepto || root.ender || root.$), true);
+}(this, function(root, $, patchJQuery) {
+    "use strict";
+
+    var scroolly;
+
+    scroolly = {
         options: {
             timeout: null,
             meter: $('.scroolly'),
@@ -22,7 +41,7 @@
         winHeight: $(window).height()
     };
 
-    $.scroolly.scrollLayout = {
+    scroolly.scrollLayout = {
 //  TSB - top screen border        
 //        topbarSearchForm:{
 //            element: searchFormTop,
@@ -73,32 +92,32 @@
 
     };
 
-    $.scroolly._isObject = function(val){
+    scroolly._isObject = function(val){
         return typeof val === 'object';
     };
 
-    $.scroolly._isArray = function(val){
+    scroolly._isArray = function(val){
         return val instanceof Array;
     };
 
-    $.scroolly._isNumber = function(val){
+    scroolly._isNumber = function(val){
         return val instanceof Number || typeof val === 'number';
     };
     
-    $.scroolly._isString = function(val){
+    scroolly._isString = function(val){
         return val instanceof String || typeof val === 'string';
     };
 
-    $.scroolly._default = function(obj, key, defaultValue){
+    scroolly._default = function(obj, key, defaultValue){
         if(defaultValue === undefined){ 
             defaultValue = null; 
         }
         var parts = (key+'').split('.');
-        if(obj && ($.scroolly._isObject(obj)||$.scroolly._isArray(obj))){
+        if(obj && (scroolly._isObject(obj)||scroolly._isArray(obj))){
             var root = obj;
             for(var i in parts){
                 var part = parts[i];
-                if(($.scroolly._isObject(root)||$.scroolly._isArray(root)) && root[part]!==undefined){
+                if((scroolly._isObject(root)||scroolly._isArray(root)) && root[part]!==undefined){
                     root = root[part];
                 }else{
                     return defaultValue;
@@ -116,13 +135,13 @@
      * @param {string} boundry - '[anchor] [offset] = [vieport anchor] [offset]'
      * @return {object} - parsed boundry
      */
-    $.scroolly.parseCoords = function(boundry) {
+    scroolly.parseCoords = function(boundry) {
         
         var strings = boundry.split(/\s*=\s*/);
         var coordRel = strings[0] || 'doc-top';
-        var parsedCoordRel = $.scroolly.parseCoord(coordRel);
+        var parsedCoordRel = scroolly.parseCoord(coordRel);
         var coordVP = strings[1] || parsedCoordRel.anchor;
-        var parsedCoordVP = $.scroolly.parseCoord(coordVP);
+        var parsedCoordVP = scroolly.parseCoord(coordVP);
         return [parsedCoordRel, parsedCoordVP];
     };
 
@@ -131,7 +150,7 @@
      * @param {string} coord - '[anchor] [offset]'
      * @return {object} - parsed boundry
      */
-    $.scroolly.parseCoord = function(coord){
+    scroolly.parseCoord = function(coord){
         var reAnchor = /((vp|doc|el|con)-)?(top|center|bottom)?/i;
         
         var reOffsetStr = '(\\+|-)?\\s*(\\d+)(\\%|vp|doc|el|con)?';
@@ -177,21 +196,21 @@
      * @param {jQuery(container)} $container
      * @return {object} - parsed boundry
      */
-    $.scroolly.calculateCoord = function(coord, $element, $container){
-        if($.scroolly._isString(coord)){
-            coord = $.scroolly.parseCoord(coord);
+    scroolly.calculateCoord = function(coord, $element, $container){
+        if(scroolly._isString(coord)){
+            coord = scroolly.parseCoord(coord);
         }
         var subjectCoord = 0;
         if('vp' === coord.subject){
             switch(coord.anchor){
                 case 'top':
-                    subjectCoord = $.scroolly.scrollTop;
+                    subjectCoord = scroolly.scrollTop;
                     break;
                 case 'center':
-                    subjectCoord = $.scroolly.scrollCenter;
+                    subjectCoord = scroolly.scrollCenter;
                     break;
                 case 'bottom':
-                    subjectCoord = $.scroolly.scrollBottom;
+                    subjectCoord = scroolly.scrollBottom;
                     break
             }
         }else if('doc' === coord.subject){
@@ -200,10 +219,10 @@
                     subjectCoord = 0;
                     break;
                 case 'center':
-                    subjectCoord = $.scroolly.docMiddle;
+                    subjectCoord = scroolly.docMiddle;
                     break;
                 case 'bottom':
-                    subjectCoord = $.scroolly.docHeight;
+                    subjectCoord = scroolly.docHeight;
             }
         }else{ 
             var $subject = 'con' === coord.subject? $container:$element;
@@ -231,10 +250,10 @@
                 var relativeHeight = 0;
                 switch(o.subject){
                     case 'vp':
-                        relativeHeight = $.scroolly.winHeight;
+                        relativeHeight = scroolly.winHeight;
                         break;
                     case 'doc':
-                        relativeHeight = $.scroolly.docHeight;
+                        relativeHeight = scroolly.docHeight;
                         break;
                     case 'el':
                         relativeHeight = $element.outerHeight();
@@ -261,8 +280,8 @@
      * @param {$(DOMnode)} $container
      * @returns {integer} how much we should scroll down till boundry
      */
-    $.scroolly.cmpCoords = function(coords, $element, $container){
-        return $.scroolly.calculateCoord(coords[0], $element, $container) - $.scroolly.calculateCoord(coords[1], $element, $container);
+    scroolly.cmpCoords = function(coords, $element, $container){
+        return scroolly.calculateCoord(coords[0], $element, $container) - scroolly.calculateCoord(coords[1], $element, $container);
     };
 
     /**
@@ -270,10 +289,10 @@
      * @param {object} rule
      * @return {boolean} 
      */ 
-    $.scroolly.isRuleInActiveWidthRange = function(rule) {
-        var fromX = $.scroolly._default(rule, 'minWidth', 0);
-        var toX = $.scroolly._default(rule, 'maxWidth', 'infinity');
-        var meter = $.scroolly._default($.scroolly.options, 'meter');
+    scroolly.isRuleInActiveWidthRange = function(rule) {
+        var fromX = scroolly._default(rule, 'minWidth', 0);
+        var toX = scroolly._default(rule, 'maxWidth', 'infinity');
+        var meter = scroolly._default(scroolly.options, 'meter');
         var width = $( window ).width();
         if(meter.length){
             var minWidthScrolly = meter.length ? parseInt(meter.css('min-width')) : 0;
@@ -297,14 +316,14 @@
      *      length: total length of the region in pisels
      * }
      */
-    $.scroolly.isRuleActive = function(rule, $element, $container) {
-        var checkinWidth = $.scroolly.isRuleInActiveWidthRange(rule);
+    scroolly.isRuleActive = function(rule, $element, $container) {
+        var checkinWidth = scroolly.isRuleInActiveWidthRange(rule);
         if (!checkinWidth) {
             return false;
         }
 
-        var ruleDirection = $.scroolly._default(rule, 'direction', 0);
-        var scrollDirection = $.scroolly.direction;
+        var ruleDirection = scroolly._default(rule, 'direction', 0);
+        var scrollDirection = scroolly.direction;
 
         if (ruleDirection
                 && (ruleDirection > 0 && scrollDirection < 0
@@ -312,14 +331,14 @@
             return false;
         }
 
-        var fromY = $.scroolly._default(rule, 'from', '0');
-        var toY = $.scroolly._default(rule, 'to', 'finish');
+        var fromY = scroolly._default(rule, 'from', '0');
+        var toY = scroolly._default(rule, 'to', 'finish');
 
-        var toTop = $.scroolly.cmpCoords(fromY, $element, $container);
+        var toTop = scroolly.cmpCoords(fromY, $element, $container);
         if (toTop > 0) {
             return false;
         }
-        var toBottom = $.scroolly.cmpCoords(toY, $element, $container);
+        var toBottom = scroolly.cmpCoords(toY, $element, $container);
         if (toBottom <= 0) {
             return false;
         }
@@ -337,7 +356,7 @@
      * @param {array} rules
      * @param {$(DOMnode)} $container description
      */
-    $.scroolly.addItem = function(id, $element, rules, $container) {
+    scroolly.addItem = function(id, $element, rules, $container) {
         if(!$element.length){
             return false;
         }
@@ -347,35 +366,35 @@
             
             var isAbsolute = !$container;//?true:false;
             
-            var fromY = $.scroolly._default(rule, 'from', 'doc-top');
+            var fromY = scroolly._default(rule, 'from', 'doc-top');
             
-            if ($.scroolly._isString(fromY) || $.scroolly._isNumber(fromY)) {
-                fromY = $.scroolly.parseCoords('' + fromY);
+            if (scroolly._isString(fromY) || scroolly._isNumber(fromY)) {
+                fromY = scroolly.parseCoords('' + fromY);
                 rule.from = fromY;
             }
 
-            var toY = $.scroolly._default(rule, 'to', 'doc-bottom');
+            var toY = scroolly._default(rule, 'to', 'doc-bottom');
 
-            if ($.scroolly._isString(toY) || $.scroolly._isNumber(toY)) {
-                toY = $.scroolly.parseCoords('' + toY);
+            if (scroolly._isString(toY) || scroolly._isNumber(toY)) {
+                toY = scroolly.parseCoords('' + toY);
                             
                 rule.to = toY;
             }
             
-            var fromCss = $.scroolly._default(rule, 'cssFrom');
-            var toCss = $.scroolly._default(rule, 'cssTo');
+            var fromCss = scroolly._default(rule, 'cssFrom');
+            var toCss = scroolly._default(rule, 'cssTo');
             if(fromCss && toCss){
                 var cssOnScroll = function(element, offset, length, rule){
                     var progress = offset / length;
-                    var fromCss = $.scroolly._default(rule, 'cssFrom');
-                    var toCss = $.scroolly._default(rule, 'cssTo');
+                    var fromCss = scroolly._default(rule, 'cssFrom');
+                    var toCss = scroolly._default(rule, 'cssTo');
                     var css = {};
                     for(var property in fromCss){
                         var fromProp = fromCss[property];
-                        var toProp = $.scroolly._default(toCss, property, fromProp);
-                        css[property] = $.scroolly.getTransitionValue(fromProp, toProp, progress);
+                        var toProp = scroolly._default(toCss, property, fromProp);
+                        css[property] = scroolly.getTransitionValue(fromProp, toProp, progress);
                     }
-                    element.css($.scroolly.extendCssWithPrefix(css));
+                    element.css(scroolly.extendCssWithPrefix(css));
                 };
                 
                 rule.cssOnScroll = cssOnScroll;
@@ -399,16 +418,16 @@
                             $($container[i]):$container;
                     }
                 }
-                $.scroolly.addItem(id+'-'+i, $(this), clonedRules, $con);
+                scroolly.addItem(id+'-'+i, $(this), clonedRules, $con);
             });
             
             return true;
         }
-        var item = $.scroolly._default($.scroolly.scrollLayout, id);
+        var item = scroolly._default(scroolly.scrollLayout, id);
         if (item) {
             item.rules.concat(rules);
         } else {
-            $.scroolly.scrollLayout[id] = {
+            scroolly.scrollLayout[id] = {
                 element: $element,
                 container: $container,
                 rules: rules
@@ -416,19 +435,17 @@
         }
         return true;
     };
-    
-    $.fn.scroolly = function(rules, $container, id){
-        $.scroolly.init();
-        var $element = this;
-        if(!this.length){
+
+    scroolly.factory = function ($element, rules, $container, id) {
+        scroolly.init();
+        if(!$element.length){
             return false;
-        };
+        }
         if(!rules){
             return false;
-        };
-        var id = id || $element[0].tagName + '_'+ Object.keys($.scroolly.scrollLayout).length;
-        $.scroolly.addItem(id, $element, rules, $container, false);
-        return this;
+        }
+        id = id || $element[0].tagName + '_'+ Object.keys(scroolly.scrollLayout).length;
+        scroolly.addItem(id, $element, rules, $container, false);
     };
 
     /**
@@ -456,8 +473,8 @@
      *      static - 
      * } 
      */
-    $.scroolly.stickItem = function(id, $element, params /*$bottomContainer, mode, offsetTop, offsetBottom*/) {
-        $.scroolly.stickItemXY(id, $element, (params instanceof Array)?params:[params]);
+    scroolly.stickItem = function(id, $element, params /*$bottomContainer, mode, offsetTop, offsetBottom*/) {
+        scroolly.stickItemXY(id, $element, (params instanceof Array)?params:[params]);
     };
 
     /**
@@ -470,18 +487,18 @@
      * @param $(DOMnode) $element
      * @param array params - array of objects described in stickItem()
      */
-    $.scroolly.stickItemXY = function(id, $element, params /*$bottomContainer, mode, offsetTop, offsetBottom*/) {
+    scroolly.stickItemXY = function(id, $element, params /*$bottomContainer, mode, offsetTop, offsetBottom*/) {
         params = params || [];
         var rules = [];
         for (var x in params) {
             var xRange = params[x];
-            var $bottomContainer = $.scroolly._default(xRange, '$bottomContainer', $('body'));
-            var mode = $.scroolly._default(xRange, 'mode');
-            var offsetTop = $.scroolly._default(xRange, 'offsetTop', 0);
-            var offsetBottom = $.scroolly._default(xRange, 'offsetBottom', 0);
-            var minWidth = $.scroolly._default(xRange, 'minWidth', 0);
-            var maxWidth = $.scroolly._default(xRange, 'maxWidth', 'infinity');
-            var isStatic = $.scroolly._default(xRange, 'static', false);
+            var $bottomContainer = scroolly._default(xRange, '$bottomContainer', $('body'));
+            var mode = scroolly._default(xRange, 'mode');
+            var offsetTop = scroolly._default(xRange, 'offsetTop', 0);
+            var offsetBottom = scroolly._default(xRange, 'offsetBottom', 0);
+            var minWidth = scroolly._default(xRange, 'minWidth', 0);
+            var maxWidth = scroolly._default(xRange, 'maxWidth', 'infinity');
+            var isStatic = scroolly._default(xRange, 'static', false);
 
             if ('next' === $bottomContainer) {
                 mode = mode || 'margin';
@@ -522,8 +539,8 @@
                     offsetBottom: offsetBottom,
                     bottomContainer: $bottomContainer,
                     mode: mode
-                            //                    from: offset_2,
-                            //                    css: {'position': 'absolute', 'top':(offset_2+offsetTop)+'px'}
+//                    from: offset_2,
+//                    css: {'position': 'absolute', 'top':(offset_2+offsetTop)+'px'}
                 });
             } else {
                 rules.push({
@@ -536,33 +553,7 @@
             }
         }
 
-        $.scroolly.addItem(id, $($element), rules);
-    };
-
-    /**
-     * params = [widthRange1, widthRange2, ... , widthRangeN]
-     * 
-     * widthRangeN = {
-     *      $bottomContainer: $(DOMnode),   // - container that defines bottom container
-     *      mode: 'margin'||'padding', // - defines the way element height will be compensated
-     *      minWidth: 0,
-     *      maxWidth: 'infinity', 
-     *      static: false // - whether element should be fixed allways for current width range
-     * }
-     * 
-     * 
-     * @param {type} params
-     * @param {type} id
-     * @returns {Boolean|String}
-     */
-    $.fn.scroollySticky = function(params, id){
-        $.scroolly.init();
-        var $element = this;
-        if(!this.length){
-            return false;
-        };
-        var id = id || $element[0].tagName + '_'+ Object.keys($.scroolly.scrollLayout).length;
-        return $.scroolly.stickItemXY(id, $element, (params instanceof Array)?params:[params])?id:false;
+        scroolly.addItem(id, $($element), rules);
     };
 
     /**
@@ -574,12 +565,12 @@
      * @param {object} rule - single rule
      * @returns {object} - recalculated rule
      */
-    $.scroolly.processStickyItemRange = function($element, rule) {
+    scroolly.processStickyItemRange = function($element, rule) {
         rule = rule || {};
-        var $bottomContainer = $.scroolly._default(rule, 'bottomContainer', $('body'));
-        var mode = $.scroolly._default(rule, 'mode');
-        var offsetTop = $.scroolly._default(rule, 'offsetTop', 0);
-        var offsetBottom = $.scroolly._default(rule, 'offsetBottom', 0);
+        var $bottomContainer = scroolly._default(rule, 'bottomContainer', $('body'));
+        var mode = scroolly._default(rule, 'mode');
+        var offsetTop = scroolly._default(rule, 'offsetTop', 0);
+        var offsetBottom = scroolly._default(rule, 'offsetBottom', 0);
 
         var itemHeight = parseInt($element.css('margin-top'))
                 + $element.height()
@@ -667,21 +658,21 @@
      * 
      * @returns {Boolean}
      */
-    $.scroolly.onResize = function() {
-        $.scroolly.winHeight = $(window).height();
-//        $.scroolly.docHeight = $(document).height();
-        $.scroolly.docHeight = $.scroolly.body.height();
-        $.scroolly.docMiddle = Math.floor($.scroolly.docHeight / 2);
+    scroolly.onResize = function() {
+        scroolly.winHeight = $(window).height();
+//        scroolly.docHeight = $(document).height();
+        scroolly.docHeight = scroolly.body.height();
+        scroolly.docMiddle = Math.floor(scroolly.docHeight / 2);
 
         var needScroll = false;
 
-        for (var id in $.scroolly.scrollLayout) {
+        for (var id in scroolly.scrollLayout) {
             // cycling through all visual elements that should react 
             // to scrolling and resizing
-            var item = $.scroolly.scrollLayout[id];
+            var item = scroolly.scrollLayout[id];
             for (var i in item.rules) {
                 var rule = item.rules[i];
-                var checkin = $.scroolly.isRuleInActiveWidthRange(rule);
+                var checkin = scroolly.isRuleInActiveWidthRange(rule);
                 needScroll |= checkin;
                 if (checkin && rule.from === undefined) {
                     $(item.element).css('position', '');
@@ -690,9 +681,9 @@
                         rule.bottomContainer.css('margin-top', '');
                     }
                     // item entered new range and should adapt
-                    var source = $.scroolly._default(rule, 'source');
+                    var source = scroolly._default(rule, 'source');
                     if('sticky' === source){
-                        item.rules[i] = $.scroolly.processStickyItemRange(item.element, rule);
+                        item.rules[i] = scroolly.processStickyItemRange(item.element, rule);
                     }
 
                 }
@@ -700,11 +691,11 @@
         }
         if (needScroll) {
             // dark magick here do not touch this useless string
-            $.scroolly.scrollLayout = $.scroolly.scrollLayout;
+            scroolly.scrollLayout = scroolly.scrollLayout;
             setTimeout(function() {
-                $.scroolly.onScroll(true);
+                scroolly.onScroll(true);
             }, 0);
-//            $.scroolly.onScroll();
+//            scroolly.onScroll();
         }
         return true;
     };
@@ -715,7 +706,7 @@
      * @param {integer} length
      * @returns {object} progress metrics
      */
-    $.scroolly.getProgress = function(offset, length) {
+    scroolly.getProgress = function(offset, length) {
         var relative = offset / length;
         return {
             offset: offset,
@@ -733,7 +724,7 @@
      * @param {float} progress
      * @returns {Number}
      */
-    $.scroolly.getTransitionFloatValue = function(start, stop, progress) {
+    scroolly.getTransitionFloatValue = function(start, stop, progress) {
         if(progress <= 0){
             return start;
         }else if(progress>=1){
@@ -749,8 +740,8 @@
      * @param {float} progress
      * @returns {Number}
      */
-    $.scroolly.getTransitionIntValue = function(start, stop, progress) {
-        return Math.round($.scroolly.getTransitionFloatValue(start, stop, progress));
+    scroolly.getTransitionIntValue = function(start, stop, progress) {
+        return Math.round(scroolly.getTransitionFloatValue(start, stop, progress));
     };
     
     /**
@@ -758,7 +749,7 @@
      * @param {type} color
      * @returns {Array}
      */
-    $.scroolly.hashColor2rgb = function(color){
+    scroolly.hashColor2rgb = function(color){
         var m = color.match(/^#([0-9a-f]{3})$/i);
         if(m) {
             // in three-character format, each value is multiplied by 0x11 to give an
@@ -788,7 +779,7 @@
      * @param {integer} b
      * @returns {string} #RRGGBB
      */
-    $.scroolly.rgb2HashColor = function(r,g,b){
+    scroolly.rgb2HashColor = function(r,g,b){
         var res = '#';
         for(var i in arguments){
             var c = arguments[i];
@@ -809,18 +800,18 @@
      * @param {float} progress
      * @returns {Number}
      */
-    $.scroolly.getTransitionColorValue = function(start, stop, progress) {
+    scroolly.getTransitionColorValue = function(start, stop, progress) {
         if(progress <= 0){
             return start;
         }else if(progress>=1){
             return stop;
         }
-        var startRGB = $.scroolly.hashColor2rgb(start);
-        var stopRGB = $.scroolly.hashColor2rgb(stop);
-        var r = $.scroolly.getTransitionIntValue(startRGB[0], stopRGB[0], progress);
-        var g = $.scroolly.getTransitionIntValue(startRGB[1], stopRGB[1], progress);
-        var b = $.scroolly.getTransitionIntValue(startRGB[2], stopRGB[2], progress);
-        return $.scroolly.rgb2HashColor(r,g,b);
+        var startRGB = scroolly.hashColor2rgb(start);
+        var stopRGB = scroolly.hashColor2rgb(stop);
+        var r = scroolly.getTransitionIntValue(startRGB[0], stopRGB[0], progress);
+        var g = scroolly.getTransitionIntValue(startRGB[1], stopRGB[1], progress);
+        var b = scroolly.getTransitionIntValue(startRGB[2], stopRGB[2], progress);
+        return scroolly.rgb2HashColor(r,g,b);
     };
     
     /**
@@ -830,15 +821,15 @@
      * @param {float} progress
      * @returns {Number}
      */
-    $.scroolly.getTransitionValue = function(start, stop, progress) {
+    scroolly.getTransitionValue = function(start, stop, progress) {
         if(progress <= 0){
             return start;
         }else if(progress>=1){
             return stop;
         }
         var called = 0;
-        if($.scroolly._isNumber(start) && $.scroolly._isNumber(stop)){
-            return $.scroolly.getTransitionFloatValue(start, start, progress);
+        if(scroolly._isNumber(start) && scroolly._isNumber(stop)){
+            return scroolly.getTransitionFloatValue(start, start, progress);
         }
         var re = /(\d*\.\d+)|(\d+)|(#[0-9a-f]{6})|(#[0-9a-f]{3})/gi;
         var stops = (''+stop).match(re);
@@ -849,14 +840,14 @@
             called++;
             if(int && int.length){
                 return /\d*\.\d+/.test(currentStop)?
-                    $.scroolly.getTransitionFloatValue(parseFloat(value), parseFloat(currentStop), progress):
-                    $.scroolly.getTransitionIntValue(parseInt(value), parseInt(currentStop), progress);
+                    scroolly.getTransitionFloatValue(parseFloat(value), parseFloat(currentStop), progress):
+                    scroolly.getTransitionIntValue(parseInt(value), parseInt(currentStop), progress);
             }
             if(float && float.length){
-                return $.scroolly.getTransitionFloatValue(parseFloat(value), parseFloat(currentStop), progress);
+                return scroolly.getTransitionFloatValue(parseFloat(value), parseFloat(currentStop), progress);
             }
             if(color6 && color6.length || color3 && color3.length){
-                return $.scroolly.getTransitionColorValue(value, currentStop, progress);
+                return scroolly.getTransitionColorValue(value, currentStop, progress);
             }
             return value;
         });
@@ -867,26 +858,26 @@
      * @param {boolean} force description
      * @returns {boolean}
      */
-    $.scroolly.onScroll = function(force) {
+    scroolly.onScroll = function(force) {
 //        var scrollPos = $(document).scrollTop(); // Y-coord that is checked against fromY & toY
-        var scrollPos = $.scroolly.body.scrollTop(); // Y-coord that is checked against fromY & toY
+        var scrollPos = scroolly.body.scrollTop(); // Y-coord that is checked against fromY & toY
         
-        if (!force && scrollPos === $.scroolly.scrollTop) {
+        if (!force && scrollPos === scroolly.scrollTop) {
             return false;
         }
-        var prevPos = $.scroolly.scrollTop;
-        var prevDirection = $.scroolly.direction;
-        $.scroolly.scrollTop = scrollPos; // Y-coord that is checked against fromY & toY
-        $.scroolly.scrollBottom = scrollPos + $.scroolly.winHeight;
-        $.scroolly.scrollCenter = scrollPos + Math.floor($.scroolly.winHeight / 2);
-        $.scroolly.direction = scrollPos - prevPos;
-        var directionChanged = !($.scroolly.direction === prevDirection
-                || $.scroolly.direction < 0 && prevDirection < 0
-                || $.scroolly.direction > 0 && prevDirection > 0);
-        for (var id in $.scroolly.scrollLayout) {
+        var prevPos = scroolly.scrollTop;
+        var prevDirection = scroolly.direction;
+        scroolly.scrollTop = scrollPos; // Y-coord that is checked against fromY & toY
+        scroolly.scrollBottom = scrollPos + scroolly.winHeight;
+        scroolly.scrollCenter = scrollPos + Math.floor(scroolly.winHeight / 2);
+        scroolly.direction = scrollPos - prevPos;
+        var directionChanged = !(scroolly.direction === prevDirection
+                || scroolly.direction < 0 && prevDirection < 0
+                || scroolly.direction > 0 && prevDirection > 0);
+        for (var id in scroolly.scrollLayout) {
             // cycling through all visual elements that should react 
             // to scrolling and resizing
-            var item = $.scroolly.scrollLayout[id];
+            var item = scroolly.scrollLayout[id];
             var totalRules = item.rules.length;
             var checkedIn = [];
             var checkedOut = [];
@@ -894,12 +885,12 @@
             
             for (var i = 0; i < totalRules; i++) {
                 var rule = item.rules[i];
-                var fromX = $.scroolly._default(rule, 'minWidth', 0);
-                var toX = $.scroolly._default(rule, 'maxWidth', 'infinity');
+                var fromX = scroolly._default(rule, 'minWidth', 0);
+                var toX = scroolly._default(rule, 'maxWidth', 'infinity');
 
                 var container = item.container === 'self' ? item.element : item.container;
                 
-                rule.checkin = $.scroolly.isRuleActive(rule, item.element, container);
+                rule.checkin = scroolly.isRuleActive(rule, item.element, container);
                 rule.class = rule.class || 'scroll-pos-' + (rule.alias) + ' window-width-' + fromX + '-to-' + toX;
                 if(rule.checkin){ 
                     active.push(i);
@@ -940,7 +931,7 @@
                 var i = checkedIn[j];
                 var rule = item.rules[i];
                 if (rule.css) {
-                    item.element.css($.scroolly.extendCssWithPrefix(rule.css));
+                    item.element.css(scroolly.extendCssWithPrefix(rule.css));
                 }
                 if (rule.addClass) {
                     item.element.addClass(rule.addClass);
@@ -950,9 +941,9 @@
                 }
                 item.element.addClass(rule.class);
 
-                var $bottomContainer = $.scroolly._default(rule, 'bottomContainer');
-                var mode = $.scroolly._default(rule, 'mode');
-                var itemHeight = $.scroolly._default(rule, 'itemHeight');
+                var $bottomContainer = scroolly._default(rule, 'bottomContainer');
+                var mode = scroolly._default(rule, 'mode');
+                var itemHeight = scroolly._default(rule, 'itemHeight');
 
                 if ($bottomContainer && mode && itemHeight) {
                     $bottomContainer.css(mode + '-top', itemHeight + 'px');
@@ -979,10 +970,10 @@
                     rule.onScroll(item.element, rule.checkin.offset, rule.checkin.length, rule);
                 }
                 if (directionChanged && rule.onDirectionChanged) {
-                    rule.onDirectionChanged(item.element, $.scroolly.direction, rule);
+                    rule.onDirectionChanged(item.element, scroolly.direction, rule);
                 }
             }
-            $.scroolly.scrollLayout[id] = item;
+            scroolly.scrollLayout[id] = item;
             
         }
 
@@ -990,7 +981,7 @@
 
 
     //Will be called once (when scroolly gets initialized).
-    $.scroolly.detectCSSPrefix = function() {
+    scroolly.detectCSSPrefix = function() {
         //Only relevant prefixes. May be extended.
         //Could be dangerous if there will ever be a CSS property which actually starts with "ms". Don't hope so.
         var rxPrefixes = /^(?:O|Moz|webkit|ms)|(?:-(?:o|moz|webkit|ms)-)/;
@@ -1004,43 +995,43 @@
 
         for (var k in style) {
             //We check the key and if the key is a number, we check the value as well, because safari's getComputedStyle returns some weird array-like thingy.
-            $.scroolly.theCSSPrefix = (k.match(rxPrefixes) || (+k === k && style[k].match(rxPrefixes)));
+            scroolly.theCSSPrefix = (k.match(rxPrefixes) || (+k === k && style[k].match(rxPrefixes)));
 
-            if ($.scroolly.theCSSPrefix) {
+            if (scroolly.theCSSPrefix) {
                 break;
             }
         }
 
         //Did we even detect a prefix?
-        if (!$.scroolly.theCSSPrefix) {
-            $.scroolly.theCSSPrefix = $.scroolly.theDashedCSSPrefix = '';
+        if (!scroolly.theCSSPrefix) {
+            scroolly.theCSSPrefix = scroolly.theDashedCSSPrefix = '';
 
             return;
         }
 
-        $.scroolly.theCSSPrefix = $.scroolly.theCSSPrefix[0];
+        scroolly.theCSSPrefix = scroolly.theCSSPrefix[0];
 
         //We could have detected either a dashed prefix or this camelCaseish-inconsistent stuff.
-        if ($.scroolly.theCSSPrefix.slice(0, 1) === '-') {
-            $.scroolly.theDashedCSSPrefix = $.scroolly.theCSSPrefix;
+        if (scroolly.theCSSPrefix.slice(0, 1) === '-') {
+            scroolly.theDashedCSSPrefix = scroolly.theCSSPrefix;
 
             //There's no logic behind these. Need a look up.
-            $.scroolly.theCSSPrefix = ({
+            scroolly.theCSSPrefix = ({
                 '-webkit-': 'webkit',
                 '-moz-': 'Moz',
                 '-ms-': 'ms',
                 '-o-': 'O'
-            })[$.scroolly.theCSSPrefix];
+            })[scroolly.theCSSPrefix];
         } else {
-            $.scroolly.theDashedCSSPrefix = '-' + $.scroolly.theCSSPrefix.toLowerCase() + '-';
+            scroolly.theDashedCSSPrefix = '-' + scroolly.theCSSPrefix.toLowerCase() + '-';
         }
     };
     
-    $.scroolly.cssPrefix = function(key){
-        return $.scroolly.theDashedCSSPrefix + key;
+    scroolly.cssPrefix = function(key){
+        return scroolly.theDashedCSSPrefix + key;
     };
     
-    $.scroolly.extendCssWithPrefix = function(cssObj){
+    scroolly.extendCssWithPrefix = function(cssObj){
         var cssExt = {};
         for(var prop in cssObj){
             var re = /^-(moz-|webkit-|o-|ms-)?/i;
@@ -1050,7 +1041,7 @@
             if(m && !m[1]){
                 var val = cssObj[prop];
                 cssExt[newProp]=val;
-                cssExt[$.scroolly.cssPrefix(newProp)]=val;
+                cssExt[scroolly.cssPrefix(newProp)]=val;
                 delete cssObj[prop];
             }
         }
@@ -1059,26 +1050,26 @@
         return cssObj;
     };
 
-    $.scroolly.now = Date.now || function() {
+    scroolly.now = Date.now || function() {
         return +new Date();
     };
 
 
-    $.scroolly.getRAF = function() {
-        var requestAnimFrame = window.requestAnimationFrame || window[$.scroolly.theCSSPrefix.toLowerCase() + 'RequestAnimationFrame'];
+    scroolly.getRAF = function() {
+        var requestAnimFrame = window.requestAnimationFrame || window[scroolly.theCSSPrefix.toLowerCase() + 'RequestAnimationFrame'];
 
-        var lastTime = $.scroolly.now();
+        var lastTime = scroolly.now();
 
-        if (false && $.scroolly.isMobile || !requestAnimFrame) {
+        if (false && scroolly.isMobile || !requestAnimFrame) {
             requestAnimFrame = function(callback) {
                 //How long did it take to render?
-                var deltaTime = $.scroolly.now() - lastTime;
+                var deltaTime = scroolly.now() - lastTime;
                 var delay = Math.max(0, 1000 / 60 - deltaTime);
 
                 return window.setTimeout(function() {
-                    lastTime = $.scroolly.now();
-//        $.scroolly.timesCalled++;
-//        $.scroolly.x.text($.scroolly.timesCalled);
+                    lastTime = scroolly.now();
+//        scroolly.timesCalled++;
+//        scroolly.x.text(scroolly.timesCalled);
                     callback();
                 }, delay);
             };
@@ -1087,10 +1078,10 @@
         return requestAnimFrame;
     };
 
-    $.scroolly.getCAF = function() {
-        var cancelAnimFrame = window.cancelAnimationFrame || window[$.scroolly.theCSSPrefix.toLowerCase() + 'CancelAnimationFrame'];
+    scroolly.getCAF = function() {
+        var cancelAnimFrame = window.cancelAnimationFrame || window[scroolly.theCSSPrefix.toLowerCase() + 'CancelAnimationFrame'];
 
-        if ($.scroolly.isMobile || !cancelAnimFrame) {
+        if (scroolly.isMobile || !cancelAnimFrame) {
             cancelAnimFrame = function(timeout) {
                 return window.clearTimeout(timeout);
             };
@@ -1100,36 +1091,77 @@
 
     };
 
-    $.scroolly.animLoop = function() {
-        $.scroolly.onScroll();
-        $.scroolly.animFrame = window.requestAnimFrame($.scroolly.animLoop);
+    scroolly.animLoop = function() {
+        scroolly.onScroll();
+        scroolly.animFrame = window.requestAnimFrame(scroolly.animLoop);
     };
 
-    $.scroolly.init = function(options) {
-        if($.scroolly.isInitialized){
+    scroolly.init = function(options) {
+        if(scroolly.isInitialized){
             return false;
         }
-        $.extend($.scroolly.options, options);
-        $.scroolly.isMobile = $.scroolly._default($.scroolly.options, 'isMobile',
+        $.extend(scroolly.options, options);
+        scroolly.isMobile = scroolly._default(scroolly.options, 'isMobile',
                 (/Android|iPhone|iPad|iPod|BlackBerry/i).test(navigator.userAgent || navigator.vendor || window.opera));
-        $.scroolly.detectCSSPrefix();
-        $.scroolly.body = $($.scroolly.options.body);
-        window.requestAnimFrame = $.scroolly.getRAF();
-        window.cancelAnimFrame = $.scroolly.getCAF();
+        scroolly.detectCSSPrefix();
+        scroolly.body = $(scroolly.options.body);
+        window.requestAnimFrame = scroolly.getRAF();
+        window.cancelAnimFrame = scroolly.getCAF();
 
-        $.scroolly.timesCalled = 0;
+        scroolly.timesCalled = 0;
         $(document).ready(function() {
-            $(window).resize($.scroolly.onResize).resize();
-//            $.scroolly.body.scroll(function(){$.scroolly.onScroll(true);}).scroll();
-            $.scroolly.animLoop();
+            $(window).resize(scroolly.onResize).resize();
+//            scroolly.body.scroll(function(){scroolly.onScroll(true);}).scroll();
+            scroolly.animLoop();
         });
-        $.scroolly.isInitialized = true;
+        scroolly.isInitialized = true;
     };
 
-    $.scroolly.destroy = function() {
-        window.cancelAnimFrame($.scroolly.animFrame);
+    scroolly.destroy = function() {
+        window.cancelAnimFrame(scroolly.animFrame);
     };
 
-}(jQuery));
+	scroolly.factorySticky = function ($element, params, id) {
+		id = id || $element[0].tagName + '_'+ Object.keys(scroolly.scrollLayout).length;
+		return scroolly.stickItemXY(id, $element, (params instanceof Array) ? params : [params]) ? id : false;
+	};
+
+    if (patchJQuery) {
+        $.scroolly = scroolly;
+
+        $.fn.scroolly = function (rules, $container, id) {
+            scroolly.factory(this, rules, $container, id);
+            return this;
+        };
+
+		/**
+		 * params = [widthRange1, widthRange2, ... , widthRangeN]
+		 *
+		 * widthRangeN = {
+		 *      $bottomContainer: $(DOMnode),   // - container that defines bottom container
+		 *      mode: 'margin'||'padding', // - defines the way element height will be compensated
+		 *      minWidth: 0,
+		 *      maxWidth: 'infinity',
+		 *      static: false // - whether element should be fixed allways for current width range
+		 * }
+		 *
+		 *
+		 * @param {type} params
+		 * @param {type} id
+		 * @returns {Boolean|String}
+		 */
+		$.fn.scroollySticky = function(params, id){
+			scroolly.init();
+
+			if(!this.length){
+				return false;
+			}
+
+			return scroolly.factorySticky(this, params, id);
+		};
+	}
+
+    return scroolly;
+}));
 
 
