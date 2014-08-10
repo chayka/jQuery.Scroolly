@@ -1,104 +1,91 @@
 ## jQuery.Scroolly, what is it?
-Scroolly is a handy jQuery plugin that simplifies greatly scripting of scroll-effects.
+Scroolly is a handy jQuery plugin that simplifies greatly scroll-effects scripting.
 
-## Scroll-effects, what are those?
 Scroll-effects are some scripted scenarios that are attuned to web-page scrolling position or direction.
-Below are some well known scroll-effects. There are no industry standards in this area so consider their titles as products of folklore or my imagination.
 
-1. **Parallax** - the adjustment of object’s movement speed. Usually applied to background position and h1 placed on some photo background. (See ‘demo/1.parallax.html’)
+In Scroolly environment scrolling scenario is defined by set of rules that are applied to some DOM elements.
 
-2. **Back to top** - the behavior of ‘Back to top’ button that is hidden at the start and appears when user scrolls page a little. (See ‘demo/2.back-to-top.html’)
-
-3. **Sticky** - titled after ‘position: sticky’ draft css specification. The behavior of an element that behaves like ‘position: static’ till it reaches the top border of a viewport. Then element sticks to the top viewport border till it’s bottom border touches it’s containing element bottom border. (See ‘demo/3.sticky.html’)
-
-4. **Sticky reverse** or **reversed sticky** - The element behaves much like previous behavior but hides when user scrolls down (forward) and appears when user scrolls top (backward). (See ‘demo/4.sticky-reverse.html’)
-
-5. **Progress bar** - set of scenarios based on the scrolling-progress. The most famous - is some progress bar that indicates the progress of article reading. Less obvious - measurement of user’s reading speed to assess ‘reading time’ and show it later. (See ‘demo/5.progressbar.html’)
-
-6. **Accordion** - this scenario applies ‘stcicky’ effect to the title bars of sequenced post items. The most famous case - instagram feed. (See ‘demo/6.accordion.html’)
-
-7. **Menu Spy** - well known ‘scroll spy’ effect in twitter bootstrap. The indication of current article item in navigation menu. (See ‘demo/7.menu-spy.html’)
-
-8. **Staging** - the most sophisticated set of scrolling scenarios based on fixing some viewport sized block (‘stage’) and performing some animations with it’s habitats (‘actors’). (See ‘demo/staging-b.html’)
-
-## Common Problems with Scroll-Effects
-There several problems scripting scroll-effects. And they are:
-
-1. Lots of factors and variables that should be considered. 
-  * Document’s, viewport’s, element’s sizes and positions.
-  * Scrolling direction.
-  * Responsive design resize adaptations.
-
-2. Computations itself. Their complexity increases exponentially with the number of effects.
-
-3. Mobile devices. Javascript works slower on mobile devices and most of them including iOS devices block javascript during scrolls.
-
-4. You never know what to «google». Since there are no standards, sometimes you don’t know how to call scroll-effect you are looking for.
-
-##Guess what? jQuery.Scroolly is the salvation :) 
-Scroolly provides you with simple syntax easy to understand learn and remember. The are almost no limitation except for mobile devices.
+Scroolly tracks viewport scrolling position and direction and applies rules that match some criteria.
 
 So what Scroolly scripting looks like? Here:
 ```
-$('#element').scrolly([
+$('#element').scroolly([
 	rule1,
 	rule2,
 	rule3
 ]);
 ```
-What are those ‘rules’? Rules - are main building bricks of scroll effects. Lets look at the simple sample:
+Rules - are main building bricks of scroll effects. Each rule is a javascript object that consists of some conditions and actions.
+
+Lets look at a simple sample:
 ```
-$('#element').scroolly({
+$('#element').scroolly([{
 	from: 'doc-top',
 	to: 'doc-bottom',
 	css: {
 		color: 'red'
 	}
-});
-```
-Yep, you can omit array brackets if you have only one rule. Actually in Scroolly lots of stuff can be omitted and you’ll like it. 
-
-But lets get back to our rule. Each rule is a javascript object that consists of some conditions and actions. 
+}]);
+``` 
+This very rule means that when viewport is between top document border and bottom document border (and it’s always true so you can omit ‘from’ and ‘to’) the #element gets the defined css styling.
 
 > When conditions are met the actions are taken.
 
-This very rule means that when viewport is between top document border and bottom document border (and it’s always true so you can omit ‘from’ and ‘to’) the #element gets the defined css styling.
+There is thorough documentation in [Wiki](wiki/Home). But before you go there, review the **«Sticky» Scenario** just to catch a grasp of what jQuery.Scroolly is about.
 
-## Rule syntax
-Below is the full rule syntax sample:
+## «Sticky» Scenario
+Let's study typical scrolling scenario - «Sticky».
+
+We have some «body» container (#container) that goes right after «header» and before «footer». 
+
+This «body» is headed with «search form» (#element) that we want to stick to viewport top border whenever viewport reaches it. We have pretty big footer, bigger than viewport height. So at some point viewport leaves «body» and we might want to unstick «search form» to leave it behind within «body».
+
+![jQuery.Scroolly Container Scenario](https://raw.githubusercontent.com/chayka/jQuery.Scroolly/master/wiki/container-scenario.png)
+
+Lets see how it is made using jQuery.Scrolly. Lets say «Search form» (#element) is the first DOM child of «body» (#container). Our CSS will be:
+
 ```
-{
-	// conditions
-	from: 'document-top',
-	to: 'document-bottom',
-	minWidth: 0,
-	maxWidth: 'infinity',
-	direction: 0,
+#container{
+	position: relative;
+	padding-top: 100px;
+}
 
-	// actions - css
-	css: {
-		'color': 'white',
-		'background-color': 'black'
-	},
-	cssFrom: {
-		'border': '1px solid #000',
-		'-border-radius': '10px 0px 10px 0px'
-	},
-	cssTo: {
-		'border': '10px solid #FFFFFF',
-		'-border-radius': '0px 10px 0px 10px'
-	},
-	addClass: 'cls1 cls2',
-	removeClass: 'cls3',
-
-	// actions - callbacks
-	onScroll: function($element, offset, length, rule){},
-	onCheckIn: function($element, rule){},
-	onCheckOut: function($element, rule){},
-	onTopIn: function($element, rule){},
-	onTopOut: function($element, rule){},
-	onBottomIn: function($element, rule){},
-	onBottomOut: function($element, rule){},
-	onDirectionChanged: function($element, direction, rule){},
+#element{
+	position: absolute;
 }
 ```
+
+Below is appropriate JS code. The reference to the container is supplied as the second param after the rules array:
+```
+$('#element').scroolly([
+{
+	to: 'con-top'
+	css:{
+		top:'0',
+		bottom: '',
+		position: 'absolute'
+	}
+},
+{
+	from: 'con-top',
+	to: 'con-bottom - 100el = vp-top',
+	css:{
+		top: '0',
+		bottom: '',
+		position: 'fixed'
+		
+	}
+},
+{	
+	from: 'con-bottom - 100el = vp-top',
+	css:{
+		top: '',
+		bottom: '0',
+		position: 'absolute'
+	}
+}
+], $('#container'));
+```
+## Interested?
+
+Welcome to the [Wiki](wiki/Home) :)
