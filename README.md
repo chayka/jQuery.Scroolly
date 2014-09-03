@@ -88,4 +88,4 @@ $('#element').scroolly([
 ```
 ## Interested?
 
-Welcome to the [Wiki](wiki/Home) :)
+Welcome to the [Wiki](https://github.com/chayka/jQuery.Scroolly/wiki/Home) :)
