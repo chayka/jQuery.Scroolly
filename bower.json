@@ -1,6 +1,6 @@
 {
-  "name": "jQuery.Scroolly",
-  "version": "0.0.1",
+  "name": "jquery.scroolly",
+  "version": "0.0.2",
   "homepage": "https://github.com/chayka/jQuery.Scroolly",
   "authors": [
     "Boris Mossounov <borix@tut.by>"
@@ -15,7 +15,8 @@
     "scroll",
     "scroll-effect",
     "parallax",
-    "sticky"
+    "sticky",
+    "jquery"
   ],
   "license": "MIT",
   "dependencies":{
