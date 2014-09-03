@@ -223,7 +223,7 @@
 					break;
 				case 'bottom':
 					subjectCoord = scroolly.scrollBottom;
-					break
+					break;
 			}
 		} else if ('doc' === coord.subject) {
 			switch (coord.anchor) {
@@ -387,13 +387,30 @@
 		$container = $container || 'self';
 
 		var rule,
-			isAbsolute,
-			fromY,
-			toY,
-			fromCss,
-			toCss,
-			cssOnScroll
+                    isAbsolute,
+                    fromY,
+                    toY,
+                    fromCss,
+                    toCss,
+                    cssOnScroll;
 
+                cssOnScroll = function (element, offset, length, rule) {
+                    var progress = offset / length,
+                        fromCss = scroolly._default(rule, 'cssFrom'),
+                        toCss = scroolly._default(rule, 'cssTo'),
+                        css = {},
+                        fromProp,
+                        toProp;
+
+                    for (var property in fromCss) {
+                        fromProp = fromCss[property];
+                        toProp = scroolly._default(toCss, property, fromProp);
+                        css[property] = scroolly.getTransitionValue(fromProp, toProp, progress);
+                    }
+
+                    element.css(scroolly.extendCssWithPrefix(css));
+                };
+                                
 		for (var i in rules) {
 			rule = rules[i];
 
@@ -418,22 +435,6 @@
 			toCss = scroolly._default(rule, 'cssTo');
 
 			if (fromCss && toCss) {
-				cssOnScroll = function (element, offset, length, rule) {
-					var progress = offset / length,
-						fromCss = scroolly._default(rule, 'cssFrom'),
-						toCss = scroolly._default(rule, 'cssTo'),
-						css = {},
-						fromProp,
-						toProp;
-
-					for (var property in fromCss) {
-						fromProp = fromCss[property];
-						toProp = scroolly._default(toCss, property, fromProp);
-						css[property] = scroolly.getTransitionValue(fromProp, toProp, progress);
-					}
-
-					element.css(scroolly.extendCssWithPrefix(css));
-				};
 
 				rule.cssOnScroll = cssOnScroll;
 			}

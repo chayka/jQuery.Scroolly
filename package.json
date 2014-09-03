@@ -1,0 +1,24 @@
+{
+    "name": "jquery.scroolly",
+    "version": "0.0.1",
+    "author": "Boris Mossounov <borix@tut.by> (https://facebook.com/mossounov/)",
+    "engines": {
+        "node": ">=0.8.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:chayka/jQuery.Scroolly.git"
+    },
+    "scripts": {
+        "test": "grunt qunit"
+    },
+    "devDependencies": {
+        "grunt-contrib-clean": "*",
+        "grunt-contrib-jshint": "*",
+        "grunt-contrib-qunit": "*",
+        "grunt-contrib-concat": "*",
+        "grunt-contrib-uglify": "*",
+        "grunt-contrib-watch": "*",
+        "grunt": "*"
+    }
+}
