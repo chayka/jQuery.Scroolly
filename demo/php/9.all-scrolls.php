@@ -1,33 +1,12 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Sticky Reverse - ScRolling in the Deep</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<?php
+$title = 'All together - ScRolling in the Deep';
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-
-<!--        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" href="css/bootstrap.min.css">        
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">-->
-        <!--<link rel="stylesheet/less" type="text/css" href="css/body.less" />-->
-        <link rel="stylesheet" href="css/scroolly.demo.min.css">
-        <link rel="stylesheet" href="css/body.min.css">
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+include 'header.php';
+?>
         
         <div class="header">
             <div class="container">
-                <h1>Sticky Reverse - ScRolling in the Deep</h1>
+                <h1>All together - ScRolling in the Deep</h1>
             </div>
             
         </div>
@@ -99,7 +78,21 @@
                     </div>
                 </article>
             </div>
-            <div class="staging staging-1 no-staging">
+            <div class="staging staging-1">
+                <div class="to-fix">
+                    <div class="stage">
+                        <div class="scene scene-1">Давайте запретим 
+                            scroll-эффекты!!!</div>
+                        <div class="scene scene-2">Они растлевают 
+                            дизайнеров...</div>
+                        <div class="scene scene-3">... а программисты 
+                            страдают!</div>
+                        <div class="scene scene-4">Про мобильные устройства 
+                            я вообще молчу</div>
+                    </div>
+                </div>
+            </div>
+            <div class="staging staging-2">
                 <div class="to-fix">
                     <div class="stage">
                         <div class="scene scene-1">Давайте запретим 
@@ -123,28 +116,98 @@
         <div class="progress_bar"></div>
         <div class="to-top">Back to top</div>
         
-<!--        <script src="js/vendor/jquery-1.10.2.min.js"></script>
-        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-        <script src="js/vendor/bootstrap.min.js"></script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
-        <script>
-          less = {
-            env: "development",
-            async: false,
-            fileAsync: false,
-            poll: 1000,
-            functions: {},
-            dumpLineNumbers: "comments",
-            relativeUrls: false,
-            rootpath: ":/a.com/"
-          };
-        </script>
-        <script src="js/vendor/less-1.7.3.min.js"></script>-->
-        <script src="js/scroolly.demo.min.js"></script>
-        <script src="../src/jquery.scroolly.js"></script>
+<?php include 'scripts.php';?>
 
         <script>
+            $('.to-top').click(function(){
+                $('html, body').animate({scrollTop: 0}, 500);
+            }).scroolly([
+                {
+                    to: 'doc-top + 100vp',
+                    css: {
+                        opacity: '0',
+                        bottom: '-600px'
+                    }
+                },
+                {
+                    from: 'doc-top + 100vp',
+                    css: {
+                        opacity: '1',
+                        bottom: '30px'
+                    }
+                }
+            ]);
+            
+            $('.header').scroolly([
+                {
+//                    from: 'doc-top',
+                    to: 'el-bottom = vp-top',
+                    cssFrom: {
+//                        '-border-radius': '0px'
+//                        'background-position': 'center 0px'
+//                        'opacity': '1'
+                    },
+                    cssTo: {
+//                        '-border-radius': '400px'
+//                        'background-position': 'center 200px'
+//                        'opacity': '.1'
+                    },
+                    onScroll: function(element, offset, length){
+                        var progress = offset / length;
+                        
+                        element.css('background-position', 'center '+$.scroolly.getTransitionFloatValue(0, 40, progress)+'%');
+                    }
+                },
+                {
+//                    from: 'top center',
+//                    to: 'top bottom',
+                    from: 'el-center = vp-top',
+                    to: 'el-bottom = vp-top',
+                    cssFrom: {
+//                        'background-position': 'center 0px',
+                        'opacity': '1'
+                    },
+                    cssTo: {
+//                        'background-position': 'center 200px',
+                        'opacity': '.1'
+                    }
+                }                
+            ]);
+            $('.header h1').scroolly([
+                {
+//                    from: 'top',
+//                    to: 'top bottom',
+                    from: 'con-top',
+                    to: 'con-bottom = top',
+                    cssFrom:{
+//                        'bottom': '100px',
+                        'transform': 'translateY(0px)',
+                        'opacity': '1'
+                    },
+                    cssTo:{
+//                        'bottom': '10px',
+                        'transform': 'translateY(100px)',
+                        'opacity': '.1'
+                    }
+                }
+            ], $('.header'));
+            
+//            $('.navbar').scroolly([
+//                {
+//                    to: 'con-top',
+//                    css: {
+//                        position: 'absolute',
+//                        top: ''
+//                    }
+//                },
+//                {
+//                    from: 'con-top',
+//                    css: {
+//                        position: 'fixed',
+//                        top: '0'
+//                    }
+//                }
+//            ], $('.body'));
             $('.navbar').scroolly([
                 {
                     to: 'con-top + 100el',
@@ -159,7 +222,6 @@
                     direction: 1,
                     from: 'con-top + 100el',
                     css: {
-//                        '-transition': 'all .2s',
                         '-transition': 'none',
                         position: 'fixed',
                         top: '-100px'
@@ -184,7 +246,357 @@
                     }
                 }
             ], $('.body'));
+            
+            
+            $('article h2').scroolly([
+                {
+                    alias: 'before',
+//                    from: 'doc-top',
+                    to: 'con-top',
+                    css:{
+                        position: 'static',
+                        top: '0px',
+                        bottom: ''
+                    }
+                },
+                {
+                    alias: 'staging',
+                    from: 'con-top',
+                    to: 'con-bottom -100el = top',
+//                    to: 'top bottom -100#',
+                    css:{
+                        position: 'fixed',
+                        top: '0px',
+                        bottom: ''
+                    },
+                    onTopIn: function($el){
+                        $el.next().css('padding-top', $el.outerHeight()+'px');
+                    },
+                    onTopOut: function($el){
+                        $el.next().css('padding-top', '0');
+                    },
+                    onCheckIn: function($el){
+                        $('.navbar li[data-target]').removeClass('active');
+                        $('.navbar li[data-target="'+$el.data('item')+'"]').addClass('active');
+                    },
+                    onCheckOut: function($el){
+                        $('.navbar li[data-target]').removeClass('active');
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-bottom -100el = top',
+//                    to: 'finish',
+                    css:{
+                        position: 'absolute',
+                        top: '',
+                        bottom: '0px'
+                    }
+                }
+            ], $('article'));
+            
+            $('.to-fix').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top 600 = bottom',
+                    css: {
+                        position: 'static'
+                    }
+                },
+                {
+                    alias: 'fixing',
+                    from: 'con-top 600 = bottom',
+                    to: 'con-top +3000 = bottom',
+                    css: {
+                        position: 'fixed',
+                        top: '',
+                        bottom: '0'
+                    }
+//                    onScroll: function($el, offset, length)
+                },
+                {
+                    alias: 'unfixing',
+                    from: 'con-top +3000 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        position: 'absolute',
+                        top: '',
+                        bottom: '0'
+                                
+                    }
+                }
+            ], $('.staging'));
+            $('.staging-1 .scene-1').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top +600 = bottom',
+                    css: {
+                        transform: 'scale(0.0)'
+                    }
+                },
+                {
+                    alias: 'slide1',
+                    from: 'con-top +600 = bottom',
+                    to: 'con-top +1200 = bottom',
+                    cssFrom: {
+                        transform: 'scale(0.0)'
+                    },
+                    cssTo:{
+                        transform: 'scale(1.0)'
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-top +1200 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        transform: 'scale(1)'
+                    }
+                }
+            ], $('.staging-1'));
+            $('.staging-1 .scene-2').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top +1200 = bottom',
+                    css: {
+                        left: '200.0%'
+                    }
+                },
+                {
+                    alias: 'slide1',
+                    from: 'con-top +1200 = bottom',
+                    to: 'con-top +1800 = bottom',
+                    cssFrom: {
+                        left: '200.0%'
+                    },
+                    cssTo:{
+                        left: '50.0%'
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-top +1800 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        left: '50.0%'
+                    }
+                }
+            ], $('.staging-1'));
+            $('.staging-1 .scene-3').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top +1800 = bottom',
+                    css: {
+                        right: '200.0%'
+                    }
+                },
+                {
+                    alias: 'slide1',
+                    from: 'con-top +1800 = bottom',
+                    to: 'con-top +2400 = bottom',
+                    cssFrom: {
+                        right: '200.0%'
+                    },
+                    cssTo:{
+                        right: '50.0%'
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-top +2400 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        right: '50.0%'
+                    }
+                }
+            ], $('.staging-1'));
+            $('.staging-1 .scene-4').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top +2400 = bottom',
+                    css: {
+                        transform: 'scale(0.0) rotate(0.0deg)',
+                        opacity: '0'
+                    }
+                },
+                {
+                    alias: 'slide1',
+                    from: 'con-top +2400 = bottom',
+                    to: 'con-top +3000 = bottom',
+                    cssFrom: {
+                        transform: 'scale(0.0) rotate(0.0deg)',
+                        opacity: '0.0'
+                    },
+                    cssTo:{
+                        transform: 'scale(1.0) rotate(720.0deg)',
+                        opacity: '1'
+                        
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-top +3000 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        transform: 'scale(1) rotate(720.0deg)',
+                        opacity: '1'
+                    }
+                }
+            ], $('.staging-1'));
+            
+            
+            $('.staging-2 .scene-1').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top +600 = bottom',
+                    css: {
+                        transform: 'scale(0.0)'
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-top +600 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        transform: 'scale(1)'
+                    }
+                }
+            ], $('.staging-2'));
+            $('.staging-2 .scene-2').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top +1200 = bottom',
+                    css: {
+                        left: '200.0%'
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-top +1200 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        left: '50.0%'
+                    }
+                }
+            ], $('.staging-2'));
+            $('.staging-2 .scene-3').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top +1800 = bottom',
+                    css: {
+                        right: '200.0%'
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-top +1800 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        right: '50.0%'
+                    }
+                }
+            ], $('.staging-2'));
+            $('.staging-2 .scene-4').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top +2400 = bottom',
+                    css: {
+                        transform: 'scale(0.0) rotate(0.0deg)',
+                        opacity: '0'
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-top +2400 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        transform: 'scale(1) rotate(720.0deg)',
+                        opacity: '1'
+                    }
+                }
+            ], $('.staging-2'));
+
+            $('.progress_bar').scroolly([
+                {
+                    cssFrom:{
+                        width: '0.0%'
+                    },
+                    cssTo:{
+                        width: '100%'
+                    }
+                }
+//                {
+//                    cssFrom:{
+//                        'background-color': '#00f'
+//                    },
+//                    cssTo:{
+//                        'background-color': '#0f0'
+//                    },
+//                    from: 'doc-top',
+//                    to: 'doc-top 16%'
+//                },
+//                {
+//                    cssFrom:{
+//                        'background-color': '#0f0'
+//                    },
+//                    cssTo:{
+//                        'background-color': '#0ff'
+//                    },
+//                    from: 'doc-top 16%',
+//                    to: 'doc-top 33%'
+//                },
+//                {
+//                    cssFrom:{
+//                        'background-color': '#0ff'
+//                    },
+//                    cssTo:{
+//                        'background-color': '#f00'
+//                    },
+//                    from: 'doc-top 33%',
+//                    to: 'doc-top 50%'
+//                },
+//                {
+//                    cssFrom:{
+//                        'background-color': '#f00'
+//                    },
+//                    cssTo:{
+//                        'background-color': '#f0f'
+//                    },
+//                    from: 'doc-top 50%',
+//                    to: 'doc-top 66%'
+//                },
+//                {
+//                    cssFrom:{
+//                        'background-color': '#f0f'
+//                    },
+//                    cssTo:{
+//                        'background-color': '#ff0'
+//                    },
+//                    from: 'doc-top 66%',
+//                    to: 'doc-top 84%'
+//                },
+//                {
+//                    cssFrom:{
+//                        'background-color': '#ff0'
+//                    },
+//                    cssTo:{
+//                        'background-color': '#fff'
+//                    },
+//                    from: 'doc-top 84%',
+//                    to: 'doc-bottom'
+//                }
+                
+            ], $('body'));
+    
         </script>
 
-    </body>
-</html>
+<?php include 'footer.php';

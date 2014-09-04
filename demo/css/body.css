@@ -97,22 +97,22 @@ and open the template in the editor.
 .body .staging .to-fix .stage .scene-1 {
   bottom: 50%;
   right: 50%;
-  background-image: url("../img/staging-1.png");
+  background-image: url("../img/staging-1.jpg");
 }
 .body .staging .to-fix .stage .scene-2 {
   bottom: 50%;
   left: 50%;
-  background-image: url("../img/staging-2.png");
+  background-image: url("../img/staging-2.jpg");
 }
 .body .staging .to-fix .stage .scene-3 {
   top: 50%;
   right: 50%;
-  background-image: url("../img/staging-3.png");
+  background-image: url("../img/staging-3.jpg");
 }
 .body .staging .to-fix .stage .scene-4 {
   top: 50%;
   left: 50%;
-  background-image: url("../img/staging-4.png");
+  background-image: url("../img/staging-4.jpg");
 }
 .body .staging-2 .scene {
   -webkit-transition: all 1s;

@@ -1,33 +1,11 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Sticky Reverse - ScRolling in the Deep</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<?php
+$title = 'Back to top - ScRolling in the Deep';
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-
-<!--        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" href="css/bootstrap.min.css">        
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">-->
-        <!--<link rel="stylesheet/less" type="text/css" href="css/body.less" />-->
-        <link rel="stylesheet" href="css/scroolly.demo.min.css">
-        <link rel="stylesheet" href="css/body.min.css">
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        
+include 'header.php';
+?>        
         <div class="header">
             <div class="container">
-                <h1>Sticky Reverse - ScRolling in the Deep</h1>
+                <h1>Back to top - ScRolling in the Deep</h1>
             </div>
             
         </div>
@@ -123,68 +101,31 @@
         <div class="progress_bar"></div>
         <div class="to-top">Back to top</div>
         
-<!--        <script src="js/vendor/jquery-1.10.2.min.js"></script>
-        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-        <script src="js/vendor/bootstrap.min.js"></script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
-        <script>
-          less = {
-            env: "development",
-            async: false,
-            fileAsync: false,
-            poll: 1000,
-            functions: {},
-            dumpLineNumbers: "comments",
-            relativeUrls: false,
-            rootpath: ":/a.com/"
-          };
-        </script>
-        <script src="js/vendor/less-1.7.3.min.js"></script>-->
-        <script src="js/scroolly.demo.min.js"></script>
-        <script src="../src/jquery.scroolly.js"></script>
+<?php include 'scripts.php';?>
 
         <script>
-            $('.navbar').scroolly([
+            $('.to-top').click(function(){
+                $('html, body').animate({scrollTop: 0}, 500);
+            }).scroolly([
                 {
-                    to: 'con-top + 100el',
-                    direction: 1,
+                    alias: 'hidden',
+//                    from: 'doc-top',
+                    to: 'doc-top + 100vp',
                     css: {
-                        '-transition': 'none',
-                        position: 'absolute',
-                        top: ''
+                        opacity: '0',
+                        bottom: '-100px'
                     }
                 },
                 {
-                    direction: 1,
-                    from: 'con-top + 100el',
+                    alias: 'shown',
+                    from: 'doc-top + 100vp',
+                    to: 'doc-bottom',
                     css: {
-//                        '-transition': 'all .2s',
-                        '-transition': 'none',
-                        position: 'fixed',
-                        top: '-100px'
-                    }
-                },
-                {
-                    to: 'con-top',
-                    direction: -1,
-                    css: {
-                        '-transition': 'none',
-                        position: 'absolute',
-                        top: ''
-                    }
-                },
-                {
-                    direction: -1,
-                    from: 'con-top',
-                    css: {
-                        '-transition': 'all .2s',
-                        position: 'fixed',
-                        top: '0'
+                        opacity: '1',
+                        bottom: '30px'
                     }
                 }
-            ], $('.body'));
+            ]);
         </script>
 
-    </body>
-</html>
+<?php include 'footer.php';

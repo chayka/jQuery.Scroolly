@@ -1,0 +1,24 @@
+{
+  "name": "scroolly.demo",
+  "version": "0.0.1",
+  "author": "Boris Mossounov <borix@tut.by> (https://facebook.com/mossounov/)",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "scripts": {
+    "test": "grunt qunit"
+  },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-cssmin": "^0.10.0",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-less": "^0.11.4",
+    "grunt-contrib-qunit": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-notify": "^0.3.1",
+    "grunt-shell": "^1.1.1"
+  }
+}

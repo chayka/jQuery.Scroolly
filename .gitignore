@@ -16,3 +16,5 @@ composer.lock
 bower_components
 node_modules
 npm-debug.log
+demo/node_modules
+demo/bower_components

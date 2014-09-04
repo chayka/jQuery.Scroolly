@@ -1,33 +1,12 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Sticky Reverse - ScRolling in the Deep</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<?php
+$title = 'Staging (b) - ScRolling in the Deep';
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-
-<!--        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" href="css/bootstrap.min.css">        
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">-->
-        <!--<link rel="stylesheet/less" type="text/css" href="css/body.less" />-->
-        <link rel="stylesheet" href="css/scroolly.demo.min.css">
-        <link rel="stylesheet" href="css/body.min.css">
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+include 'header.php';
+?>
         
         <div class="header">
             <div class="container">
-                <h1>Sticky Reverse - ScRolling in the Deep</h1>
+                <h1>Staging (b) - ScRolling in the Deep</h1>
             </div>
             
         </div>
@@ -74,7 +53,7 @@
                         Легитимность власти начинает официальный язык, поэтому никого не удивляет, что в финале порок наказан. Несомненно, генеративная поэтика параллельна. Речевой акт, в первом приближении, однородно совершает конструктивный субъект власти, так как в данном случае роль наблюдателя опосредована ролью рассказчика. Теологическая парадигма перевозит особый вид куниц, например, "Борис Годунов" А.С.Пушкина, "Кому на Руси жить хорошо" Н.А.Некрасова, "Песня о Соколе" М.Горького и др.
                     </div>
                 </article>
-                <article>
+<!--                <article>
                     <h2 class="container" data-item="a2">
                         Эпизодический культ личности: предпосылки и развитие
                     </h2>
@@ -97,9 +76,9 @@
 
                         Рыболовство иллюстрирует эфемероид, потому что сюжет и фабула различаются. Парадигма трансформации общества категорически иллюстрирует словесный брахикаталектический стих, и это является некими межсловесными отношениями другого типа, природу которых еще предстоит конкретизировать далее. Вечнозеленый кустарник, на первый взгляд, начинает функциональный социализм, заметим, каждое стихотворение объединено вокруг основного философского стержня. Понятие модернизации, несмотря на то, что все эти характерологические черты отсылают не к единому образу нарратора, отталкивает кандым, именно об этом говорил Б.В.Томашевский в своей работе 1925 года.
                     </div>
-                </article>
+                </article>-->
             </div>
-            <div class="staging staging-1 no-staging">
+            <div class="staging staging-2">
                 <div class="to-fix">
                     <div class="stage">
                         <div class="scene scene-1">Давайте запретим 
@@ -123,68 +102,117 @@
         <div class="progress_bar"></div>
         <div class="to-top">Back to top</div>
         
-<!--        <script src="js/vendor/jquery-1.10.2.min.js"></script>
-        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-        <script src="js/vendor/bootstrap.min.js"></script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
-        <script>
-          less = {
-            env: "development",
-            async: false,
-            fileAsync: false,
-            poll: 1000,
-            functions: {},
-            dumpLineNumbers: "comments",
-            relativeUrls: false,
-            rootpath: ":/a.com/"
-          };
-        </script>
-        <script src="js/vendor/less-1.7.3.min.js"></script>-->
-        <script src="js/scroolly.demo.min.js"></script>
-        <script src="../src/jquery.scroolly.js"></script>
+<?php include 'scripts.php';?>
 
         <script>
-            $('.navbar').scroolly([
+            $('.to-fix').scroolly([
                 {
-                    to: 'con-top + 100el',
-                    direction: 1,
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top 600 = bottom',
                     css: {
-                        '-transition': 'none',
-                        position: 'absolute',
-                        top: ''
+                        position: 'static'
                     }
                 },
                 {
-                    direction: 1,
-                    from: 'con-top + 100el',
+                    alias: 'fixing',
+                    from: 'con-top 600 = bottom',
+                    to: 'con-top +3000 = bottom',
                     css: {
-//                        '-transition': 'all .2s',
-                        '-transition': 'none',
                         position: 'fixed',
-                        top: '-100px'
+                        top: '',
+                        bottom: '0'
                     }
+//                    onScroll: function($el, offset, length)
                 },
                 {
-                    to: 'con-top',
-                    direction: -1,
+                    alias: 'unfixing',
+                    from: 'con-top +3000 = bottom',
+                    to: 'doc-bottom',
                     css: {
-                        '-transition': 'none',
                         position: 'absolute',
-                        top: ''
-                    }
-                },
-                {
-                    direction: -1,
-                    from: 'con-top',
-                    css: {
-                        '-transition': 'all .2s',
-                        position: 'fixed',
-                        top: '0'
+                        top: '',
+                        bottom: '0'
+                                
                     }
                 }
-            ], $('.body'));
+            ], $('.staging'));
+            
+            $('.staging-2 .scene-1').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top +600 = bottom',
+                    css: {
+                        transform: 'scale(0.0)'
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-top +600 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        transform: 'scale(1)'
+                    }
+                }
+            ], $('.staging-2'));
+            $('.staging-2 .scene-2').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top +1200 = bottom',
+                    css: {
+                        left: '200.0%'
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-top +1200 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        left: '50.0%'
+                    }
+                }
+            ], $('.staging-2'));
+            $('.staging-2 .scene-3').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top +1800 = bottom',
+                    css: {
+                        right: '200.0%'
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-top +1800 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        right: '50.0%'
+                    }
+                }
+            ], $('.staging-2'));
+            $('.staging-2 .scene-4').scroolly([
+                {
+                    alias: 'before',
+                    from: '',
+                    to: 'con-top +2400 = bottom',
+                    css: {
+                        transform: 'scale(0.0) rotate(0.0deg)',
+                        opacity: '0'
+                    }
+                },
+                {
+                    alias: 'after',
+                    from: 'con-top +2400 = bottom',
+                    to: 'doc-bottom',
+                    css: {
+                        transform: 'scale(1) rotate(720.0deg)',
+                        opacity: '1'
+                    }
+                }
+            ], $('.staging-2'));
+
         </script>
 
-    </body>
-</html>
+<?php include 'footer.php';
