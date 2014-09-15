@@ -371,6 +371,14 @@
     };
 
     /**
+     * Helper and polyfill for non-ECMA5 compliant browsers to get layout length
+     * @returns {number} length of scrollLayout
+     */
+    scroolly.getScrollLayoutLength = function () {
+        return (!Object.keys) ? $.map(scroolly.scrollLayout, function (){ return 1; }).length : Object.keys(scroolly.scrollLayout).length
+    };
+
+    /**
      * Add ellement with its rules to scroll layout
      * See the commented sample above for the rules syntax
      *
@@ -490,7 +498,7 @@
             return false;
         }
 
-        id = id || $element[0].tagName + '_' + Object.keys(scroolly.scrollLayout).length;
+        id = id || $element[0].tagName + '_' + scroolly.getScrollLayoutLength();
         scroolly.addItem(id, $element, rules, $container, false);
     };
 
@@ -976,7 +984,7 @@
                 container = item.container === 'self' ? item.element : item.container;
 
                 rule.checkin = scroolly.isRuleActive(rule, item.element, container);
-                rule.class = rule.class || 'scroll-pos-' + (rule.alias) + ' window-width-' + fromX + '-to-' + toX;
+                rule['class'] = rule['class'] || 'scroll-pos-' + (rule.alias) + ' window-width-' + fromX + '-to-' + toX;
                 if (rule.checkin) {
                     active.push(i);
                     if (!rule.isActive) {
@@ -993,7 +1001,7 @@
             for (j = 0; j < checkedOut.length; j++) {
                 i = checkedOut[j];
                 rule = item.rules[i];
-                item.element.removeClass(rule.class);
+                item.element.removeClass(rule['class']);
                 if (rule.cssOnScroll) {
                     l = rule.length || 0;
                     rule.cssOnScroll(item.element, scrollPos > prevPos ? l : 0, l, rule);
@@ -1027,7 +1035,7 @@
                 if (rule.removeClass) {
                     item.element.removeClass(rule.removeClass);
                 }
-                item.element.addClass(rule.class);
+                item.element.addClass(rule['class']);
 
                 $bottomContainer = scroolly._default(rule, 'bottomContainer');
                 mode = scroolly._default(rule, 'mode');
@@ -1212,7 +1220,7 @@
     };
 
     scroolly.factorySticky = function($element, params, id) {
-        id = id || $element[0].tagName + '_' + Object.keys(scroolly.scrollLayout).length;
+        id = id || $element[0].tagName + '_' + scroolly.getScrollLayoutLength();
         return scroolly.stickItemXY(id, $element, (params instanceof Array) ? params : [params]) ? id : false;
     };
 
