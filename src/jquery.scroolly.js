@@ -371,6 +371,14 @@
     };
 
     /**
+     * Helper and polyfill for non-ECMA5 compliant browsers to get layout length
+     * @returns {number} length of scrollLayout
+     */
+    scroolly.getScrollLayoutLength = function () {
+        return (!Object.keys) ? $.map(scroolly.scrollLayout, function (){ return 1; }).length : Object.keys(scroolly.scrollLayout).length
+    };
+
+    /**
      * Add ellement with its rules to scroll layout
      * See the commented sample above for the rules syntax
      *
@@ -490,7 +498,7 @@
             return false;
         }
 
-        id = id || $element[0].tagName + '_' + Object.keys(scroolly.scrollLayout).length;
+        id = id || $element[0].tagName + '_' + scroolly.getScrollLayoutLength();
         scroolly.addItem(id, $element, rules, $container, false);
     };
 
@@ -1212,7 +1220,7 @@
     };
 
     scroolly.factorySticky = function($element, params, id) {
-        id = id || $element[0].tagName + '_' + Object.keys(scroolly.scrollLayout).length;
+        id = id || $element[0].tagName + '_' + scroolly.getScrollLayoutLength();
         return scroolly.stickItemXY(id, $element, (params instanceof Array) ? params : [params]) ? id : false;
     };
 
