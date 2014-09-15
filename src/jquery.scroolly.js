@@ -976,7 +976,7 @@
                 container = item.container === 'self' ? item.element : item.container;
 
                 rule.checkin = scroolly.isRuleActive(rule, item.element, container);
-                rule.class = rule.class || 'scroll-pos-' + (rule.alias) + ' window-width-' + fromX + '-to-' + toX;
+                rule['class'] = rule['class'] || 'scroll-pos-' + (rule.alias) + ' window-width-' + fromX + '-to-' + toX;
                 if (rule.checkin) {
                     active.push(i);
                     if (!rule.isActive) {
@@ -993,7 +993,7 @@
             for (j = 0; j < checkedOut.length; j++) {
                 i = checkedOut[j];
                 rule = item.rules[i];
-                item.element.removeClass(rule.class);
+                item.element.removeClass(rule['class']);
                 if (rule.cssOnScroll) {
                     l = rule.length || 0;
                     rule.cssOnScroll(item.element, scrollPos > prevPos ? l : 0, l, rule);
@@ -1027,7 +1027,7 @@
                 if (rule.removeClass) {
                     item.element.removeClass(rule.removeClass);
                 }
-                item.element.addClass(rule.class);
+                item.element.addClass(rule['class']);
 
                 $bottomContainer = scroolly._default(rule, 'bottomContainer');
                 mode = scroolly._default(rule, 'mode');
