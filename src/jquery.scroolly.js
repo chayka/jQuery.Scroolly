@@ -375,7 +375,7 @@
      * @returns {number} length of scrollLayout
      */
     scroolly.getScrollLayoutLength = function () {
-        return (!Object.keys) ? $.map(scroolly.scrollLayout, function (){ return 1; }).length : Object.keys(scroolly.scrollLayout).length
+        return (!Object.keys) ? $.map(scroolly.scrollLayout, function (){ return 1; }).length : Object.keys(scroolly.scrollLayout).length;
     };
 
     /**
@@ -904,7 +904,7 @@
 
         var called = 0;
         if (scroolly._isNumber(start) && scroolly._isNumber(stop)) {
-            return scroolly.getTransitionFloatValue(start, start, progress);
+            return scroolly.getTransitionFloatValue(start, stop, progress);
         }
 
         var re = /(\d*\.\d+)|(\d+)|(#[0-9a-f]{6})|(#[0-9a-f]{3})/gi,
