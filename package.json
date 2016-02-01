@@ -24,6 +24,7 @@
     "build": "npm install && grunt",
     "start": "grunt watch"
   },
+  "main": "src/jquery.scroolly.js",
   "devDependencies": {
     "grunt-contrib-jshint": "*",
     "grunt-contrib-uglify": "*",
