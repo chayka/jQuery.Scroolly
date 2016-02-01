@@ -8,7 +8,6 @@ module.exports = function(grunt) {
         notify: {
             shell: {
                 options:{
-//                    title: "PHP2HTML",
                     message: "PHP2HTML"
                 }
             }
@@ -42,7 +41,7 @@ module.exports = function(grunt) {
                 files:{
                     'js/<%= pkg.name %>.js': [
                         'js/plugins.js', 
-                        'js/main.js', 
+                        'js/main.js'
                     ]
                 }
             }
@@ -79,8 +78,6 @@ module.exports = function(grunt) {
                 'css/<%= pkg.name %>.min.css',
             ],
             finish: [
-//                'css/body.css',
-//                'css/body.min.css',
                 'css/bootstrap-theme.min.css',
                 'css/bootstrap.min.css',
                 'css/main.min.css',

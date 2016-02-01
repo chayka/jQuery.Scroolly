@@ -5,15 +5,11 @@ module.exports = function(grunt) {
   // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        clean: {
-            src: ['dist']
-        },
         jshint: {
             scrooly: 'src/*.js'
         },
         uglify: {
             options: {
-    //        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
             },
               build: {
                 src: 'src/<%= pkg.name %>.js',
@@ -34,6 +30,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Default task(s).
-    grunt.registerTask('default', ['jshint', 'uglify']);
+    grunt.registerTask('default', ['jshint', 'uglify', 'watch']);
 
 };

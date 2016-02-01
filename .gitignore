@@ -1,7 +1,6 @@
+# ide and os files
 config
 nbproject
-
-# ide and os files
 .idea
 *.desktop
 *.thumb

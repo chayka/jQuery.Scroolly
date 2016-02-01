@@ -1,24 +1,33 @@
 {
-    "name": "jquery.scroolly",
-    "version": "0.0.1",
-    "author": "Boris Mossounov <borix@tut.by> (https://facebook.com/mossounov/)",
-    "engines": {
-        "node": ">=0.8.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "ssh://git@github.com:chayka/jQuery.Scroolly.git"
-    },
-    "scripts": {
-        "test": "grunt qunit"
-    },
-    "devDependencies": {
-        "grunt-contrib-clean": "*",
-        "grunt-contrib-jshint": "*",
-        "grunt-contrib-qunit": "*",
-        "grunt-contrib-concat": "*",
-        "grunt-contrib-uglify": "*",
-        "grunt-contrib-watch": "*",
-        "grunt": "*"
-    }
+  "name": "jquery.scroolly",
+  "title": "jQuery.Scroolly",
+  "description": "Scroolly is a handy jQuery plugin that simplifies greatly scroll-effects scripting.",
+  "keywords": [
+    "scroolly",
+    "scroll",
+    "scroll-effect",
+    "parallax",
+    "sticky",
+    "jquery"
+  ],
+  "author": "Boris Mossounov <borix@tut.by> (https://anotherguru.me/)",
+  "version": "0.0.2",
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:chayka/jQuery.Scroolly.git"
+  },
+  "scripts": {
+    "build": "npm install && grunt",
+    "start": "grunt watch"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt": "*"
+  }
 }
